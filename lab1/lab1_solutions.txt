@@ -1,0 +1,81 @@
+ssh level0@localhost
+password: level0
+
+Level 0:
+ls
+cat README
+flag:{level1:RjMY4zR6,4kaFXeBB;%K4#KiK6qYmoj}keAGVc}
+ssh level1@localhost
+password: RjMY4zR6,4kaFXeBB;%K4#KiK6qYmoj}keAGVc
+
+Level 1:
+ls
+cat README
+ls -a
+cat .README
+flag:{level2:W7RU>asPZP846[P6J6(44PVXAW7R6p}
+ssh level2@localhost
+password: W7RU>asPZP846[P6J6(44PVXAW7R6p
+
+Level 2:
+ls
+cat README
+ls -a
+cat "this file has tons of spaces"
+flag{level3:t{4Z49Z9RUj4MZ2}bMg32e7u9ek;yv}
+ssh level3@localhost
+password: t{4Z49Z9RUj4MZ2}bMg32e7u9ek;yv
+
+Level 3:
+cd "in here"
+cd "in here"
+cat README
+flag{level4:Rneb9Prg82m3J2c8T%x266V*9L*dLm}
+ssh level4@localhost
+password: Rneb9Prg82m3J2c8T%x266V*9L*dLm
+
+Level 4:
+ls
+cat README
+find
+cd 5/2/8/7
+ls
+cat FOUND
+flag{level5:fYFJYEL47u8A4k78k6^*ho$y32ouE8}
+ssh level5@localhost
+password: fYFJYEL47u8A4k78k6^*ho$y32ouE8
+
+Level 5:
+ls
+cat README
+grep -o ".\{0,5\}flag.\{0,40\}" FINDIT
+flag{level6:64%7?Emr6bWa697yALNJJd39>gT8jP}
+ssh level6@localhost
+password: 64%7?Emr6bWa697yALNJJd39>gT8jP
+
+Level 6:
+ls
+grep -r "flag"
+/* HERE37 */
+flag{level7:E%o7JCj4G7qVm8e9JX382gA23)G#NL}
+ssh level7@localhost
+password: E%o7JCj4G7qVm8e9JX382gA23)G#NL
+
+Level 7:
+
+/* flag (  6, 12,  1,  7)
+vbqw ( 22,  2, 17, 23) delta=16
+https://www.dcode.fr/caesar-cipher */
+
+ls
+cat README
+cat spinning
+cap spinning | tr '[q-za-p]' '[a-z]'86 | tr '[Q-ZA-P]' '[A-Z]'86
+flag{level8:WPcK8d*o9orNo47>MPeYo4638XC?66}
+ssh level8@localhost
+password: WPcK8d*o9orNo47>MPeYo4638XC?66
+
+Level 8:
+ls
+cat README
+flag{Congratulations!: bp7GDV6RdVhk92f6o9G^74k4.8az?L}
