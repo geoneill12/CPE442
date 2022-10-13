@@ -4,6 +4,25 @@
 using namespace cv;
 using namespace std;
 
+Mat to442_grayscale(Mat mat_image){
+
+	uint8_t test = 0;
+
+	Mat modified(mat_image.rows, mat_image.cols, CV_8UC1);
+
+	for (int row = 0; row < mat_image.rows; row++){
+
+		for (int col = 0; col < mat_image.cols; col++){
+			modified.at<uint8_t>(row, col) = (
+				mat_image.at<Vec3b>(row, col)[0] * 0.0722 +	//Blue
+				mat_image.at<Vec3b>(row, col)[1] * 0.7152 +	//Green
+				mat_image.at<Vec3b>(row, col)[2] * 0.2126);	//Red
+		}
+	}
+
+	return modified;
+}
+
 int main(int argc, char** argv){
 
     VideoCapture cap(argv[1]);
@@ -24,7 +43,7 @@ int main(int argc, char** argv){
         cols = img.cols;
 
         /********** begin grayscale code **********/
-        cvtColor(img, img_gray, COLOR_BGR2GRAY);
+        img_gray = to442_grayscale(img);
         /********** end grayscale code **********/
 
         /********** begin sobel code **********/
