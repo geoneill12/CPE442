@@ -91,7 +91,7 @@ int main(int argc, char** argv){
         imshow("Sobel", img_sobel);
         imshow("Color", img);
 
-        // Stop program is "ESC" is pressed
+        // Stop program if "ESC" is pressed
         char c=(char)waitKey(1);
         if(c==27){
             break;
