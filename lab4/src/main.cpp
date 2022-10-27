@@ -5,7 +5,7 @@
 
 using namespace cv;
 
-//pthread_barrier_t barrier;
+pthread_barrier_t barrier;
 
 Mat img_color;
 Mat img_gray(1080, 1920, CV_8UC1);
@@ -61,25 +61,25 @@ void sobel_442(int row_start, int row_end, int col_start, int col_end){
 void *sobel_thread1(void *arg){
     grayscale_442(0, 269, 0, 1919);
     sobel_442(1, 269, 1, 1918);
-    //pthread_barrier_wait(&barrier);
+    pthread_barrier_wait(&barrier);
     return NULL;
 }
 void *sobel_thread2(void *arg){
     grayscale_442(270, 539, 0, 1919);
     sobel_442(270, 539, 1, 1918);
-    //pthread_barrier_wait(&barrier);
+    pthread_barrier_wait(&barrier);
     return NULL;
 }
 void *sobel_thread3(void *arg){
     grayscale_442(540, 809, 0, 1919);
     sobel_442(540, 809, 1, 1918);
-    //pthread_barrier_wait(&barrier);
+    pthread_barrier_wait(&barrier);
     return NULL;
 }
 void *sobel_thread4(void *arg){
     grayscale_442(810, 1079, 0, 1919);
     sobel_442(810, 1078, 1, 1918);
-    //pthread_barrier_wait(&barrier);
+    pthread_barrier_wait(&barrier);
     return NULL;
 }
 
@@ -90,6 +90,11 @@ int main(int argc, char** argv){
 
     VideoCapture cap(argv[1]);
 
+    pthread_t thread1;
+    pthread_t thread2;
+    pthread_t thread3;
+    pthread_t thread4;
+
     while(true){
 
         // Get video frame, break while loop if no more frames
@@ -99,24 +104,15 @@ int main(int argc, char** argv){
 	    }
 
         // Run threads
-        pthread_t thread1;
-        pthread_t thread2;
-        pthread_t thread3;
-        pthread_t thread4;
 
-        //pthread_barrier_init(&barrier, NULL, 4);
+        pthread_barrier_init(&barrier, NULL, 4);
 
         pthread_create(&thread1, NULL, sobel_thread1, NULL);
         pthread_create(&thread2, NULL, sobel_thread2, NULL);
         pthread_create(&thread3, NULL, sobel_thread3, NULL);
         pthread_create(&thread4, NULL, sobel_thread4, NULL);
 
-        pthread_join(thread1, NULL);
-        pthread_join(thread2, NULL);
-        pthread_join(thread3, NULL);
-        pthread_join(thread4, NULL);
-
-        //pthread_barrier_destroy(&barrier);
+        pthread_barrier_destroy(&barrier);
 
         // Display image windows
         namedWindow("Sobel", 0);
@@ -134,6 +130,11 @@ int main(int argc, char** argv){
             break;
         }
     }
+
+    pthread_join(thread1, NULL);
+    pthread_join(thread2, NULL);
+    pthread_join(thread3, NULL);
+    pthread_join(thread4, NULL);
 
     // Display timing results
     auto stop = std::chrono::high_resolution_clock::now();
