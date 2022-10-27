@@ -8,24 +8,17 @@ using namespace cv;
 //pthread_barrier_t barrier;
 
 Mat img_color;
-Mat img_gray;
-Mat img_sobel;
+Mat img_gray(1080, 1920, CV_8UC1);
+Mat img_sobel(1080, 1920, CV_8UC1);
 
 void grayscale_442(int row_start, int row_end, int col_start, int col_end){
 
-    int test;
-
 	for (int row = row_start; row <= row_end; row++){
 		for (int col = col_start; col <= col_end; col++){
-			/*img_gray.at<uint8_t>(row, col) = (
+			img_gray.at<uint8_t>(row, col) = (
 				img_color.at<Vec3b>(row, col)[0] * 0.0722 +	//Blue
 				img_color.at<Vec3b>(row, col)[1] * 0.7152 +	//Green
 				img_color.at<Vec3b>(row, col)[2] * 0.2126);	//Red*/
-            
-            test = img_color.at<Vec3b>(row, col)[0] * 0.0722 +	//Blue
-				img_color.at<Vec3b>(row, col)[1] * 0.7152 +	//Green
-				img_color.at<Vec3b>(row, col)[2] * 0.2126;	//Red
-            img_gray.at<uint8_t>(row, col) = test;
 		}
 	}
 }
