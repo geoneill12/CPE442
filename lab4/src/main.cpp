@@ -7,18 +7,21 @@ using namespace cv;
 
 pthread_barrier_t barrier;
 
-Mat img_color;
+Mat img_color(1080, 1920, CV_8UC3);
 Mat img_gray(1080, 1920, CV_8UC1);
 Mat img_sobel(1080, 1920, CV_8UC1);
 
 void grayscale_442(int row_start, int row_end, int col_start, int col_end){
 
-	for (int row = row_start; row <= row_end; row++){
+	int p0, p1, p2;
+    
+    for (int row = row_start; row <= row_end; row++){
 		for (int col = col_start; col <= col_end; col++){
-			img_gray.at<uint8_t>(row, col) = (
-				img_color.at<Vec3b>(row, col)[0] * 0.0722 +	//Blue
-				img_color.at<Vec3b>(row, col)[1] * 0.7152 +	//Green
-				img_color.at<Vec3b>(row, col)[2] * 0.2126);	//Red*/
+            p0 = img_color.at<Vec3b>(row, col)[0] >> 4;     //Blue
+            p1 = img_color.at<Vec3b>(row, col)[1] >> 2;     //Green
+            p1 = p1+p1+p1;
+            p2 = img_color.at<Vec3b>(row, col)[2] >> 2;     //Red
+            img_gray.at<uint8_t>(row, col) = p0+p1+p2;
 		}
 	}
 }
@@ -124,7 +127,7 @@ int main(int argc, char** argv){
         imshow("Sobel", img_sobel);
         imshow("Color", img_color);
 
-        // Stop program is "ESC" is pressed
+        // Stop program if "ESC" is pressed
         char c=(char)waitKey(10);
         if(c==27){
             break;
@@ -139,7 +142,7 @@ int main(int argc, char** argv){
     // Display timing results
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
-    std::cout << duration.count() << "\n";
+    std::cout << "\nExecution Time: " << duration.count() << " ms\n\n";
 
 	return 0;
 }
