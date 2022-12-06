@@ -4,11 +4,6 @@
 #include <pthread.h>
 #include <arm_neon.h>
 
-#define BLUE 0b00010010
-#define GREEN 0b10110111
-#define RED 0b00110110
-
-
 using namespace cv;
 
 pthread_barrier_t barrier;
@@ -145,7 +140,7 @@ void sobel_442(int row_start, int row_end, int col_start, int col_end){
 			G_64b_s = vmovn_s16(G);
 			G_64b = vreinterpret_u8_s8(G_64b_s);
 
-	    	vst1_u8(ptr_TEMP, G_64b);
+	    		vst1_u8(ptr_TEMP, G_64b);
 
 			*(ptr_s+0) = TEMP[0];
 			*(ptr_s+3) = TEMP[1];
