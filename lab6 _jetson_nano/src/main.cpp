@@ -33,29 +33,29 @@ void grayscale_442(int row_start, int row_end, int col_start, int col_end){
 		ptr_g += 1555200;
 	}
 
-	uint8x8x3_t BGR;
-	uint8x8_t GRAY;
+	uint8x16x3_t BGR;
+	uint8x16_t GRAY;
 
     for (int row = row_start; row <= row_end; row++){
-		for (int col = col_start; col <= col_end; col = col + 8){
+		for (int j=1; j<=240; j+=2){
 
-	    	BGR = vld3_u8(ptr_c);	//loads 8 RGB pixles into 3 8x8 vectors
+	    	BGR = vld3q_u8(ptr_c);
 
-			BGR.val[0] = vshr_n_u8(BGR.val[0], 4);
-			BGR.val[1] = vshr_n_u8(BGR.val[1], 2);
-			BGR.val[2] = vshr_n_u8(BGR.val[2], 4);
+			BGR.val[0] = vshrq_n_u8(BGR.val[0], 4);
+			BGR.val[1] = vshrq_n_u8(BGR.val[1], 2);
+			BGR.val[2] = vshrq_n_u8(BGR.val[2], 4);
 
-			GRAY = vadd_u8(BGR.val[0], BGR.val[1]);
-			GRAY = vadd_u8(GRAY, BGR.val[1]);
-			GRAY = vadd_u8(GRAY, BGR.val[1]);
-			GRAY = vadd_u8(GRAY, BGR.val[2]);
-			GRAY = vadd_u8(GRAY, BGR.val[2]);
-			GRAY = vadd_u8(GRAY, BGR.val[2]);
+			GRAY = vaddq_u8(BGR.val[0], BGR.val[1]);
+			GRAY = vaddq_u8(GRAY, BGR.val[1]);
+			GRAY = vaddq_u8(GRAY, BGR.val[1]);
+			GRAY = vaddq_u8(GRAY, BGR.val[2]);
+			GRAY = vaddq_u8(GRAY, BGR.val[2]);
+			GRAY = vaddq_u8(GRAY, BGR.val[2]);
 
-	    	vst1_u8(ptr_g, GRAY);
+	    	vst1q_u8(ptr_g, GRAY);
 
-	    	ptr_c += 24;
-	    	ptr_g += 8;
+	    	ptr_c += 48;
+	    	ptr_g += 16;
 		}
 	}
 }
@@ -140,7 +140,7 @@ void sobel_442(int row_start, int row_end, int col_start, int col_end){
 			G_64b_s = vmovn_s16(G);
 			G_64b = vreinterpret_u8_s8(G_64b_s);
 
-	    		vst1_u8(ptr_TEMP, G_64b);
+	    	vst1_u8(ptr_TEMP, G_64b);
 
 			*(ptr_s+0) = TEMP[0];
 			*(ptr_s+3) = TEMP[1];
@@ -345,7 +345,7 @@ int main(int argc, char** argv){
 
 
         // Stop program if "ESC" is pressed
-        char c=(char)waitKey(10);
+        char c=(char)waitKey(1);
         if(c==27){
             break;
         }
